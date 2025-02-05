@@ -1,4 +1,4 @@
-// src/pages/AdminDashboard.jsx
+// src/components/admin/AdminDashboard.jsx
 import React from 'react';
 import { FiUsers, FiBook, FiDollarSign, FiActivity, FiSettings } from 'react-icons/fi';
 import { FaChartLine, FaGraduationCap } from 'react-icons/fa';
@@ -17,6 +17,11 @@ const AdminDashboard = () => {
     { id: 3, title: "System update completed", time: "2 hrs ago", type: "system" },
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token
+    navigate("/adminLogin"); // Redirect to login page
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
@@ -34,13 +39,13 @@ const AdminDashboard = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/admin/UsersPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiUsers className="mr-3" />
                 Users
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/admin/CoursesPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiBook className="mr-3" />
                 Courses
               </a>

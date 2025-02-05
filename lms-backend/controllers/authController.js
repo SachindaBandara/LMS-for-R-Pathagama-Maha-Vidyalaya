@@ -1,58 +1,35 @@
-// backend/controllers/authController.js
+const Admin = require("../models/Admin");
+const jwt = require("jsonwebtoken");
 
-const Admin = require('../models/Admin');
-const Teacher = require('../models/Teacher');
-const Student = require('../models/Student');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = process.env.JWT_SECRET || '1234';
-
-// Function to generate JWT token
-const generateToken = (id, role) => {
-  return jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '1h' });
-};
-
-// Login handler for all users
-const login = async (req, res) => {
-  const { userType, userNumber, password } = req.body;
+const loginAdmin = async (req, res) => {
+  const { adminNumber, password } = req.body;
 
   try {
-    let user;
-
-    // Check if userType is valid and fetch the user from the database
-    if (userType === 'admin') {
-      user = await Admin.findOne({ adminNumber: userNumber });
-    } else if (userType === 'teacher') {
-      user = await Teacher.findOne({ teacherNumber: userNumber });
-    } else if (userType === 'student') {
-      user = await Student.findOne({ studentNumber: userNumber });
-    } else {
-      return res.status(400).json({ message: 'Invalid user type' });
+    // Check if admin exists
+    const admin = await Admin.findOne({ adminNumber });
+    if (!admin) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Compare password with hashed password in DB
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+    // Compare passwords directly (plaintext)
+    if (admin.password !== password) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // Generate JWT token
-    const token = generateToken(user._id, userType);
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    return res.status(200).json({
-      message: 'Login successful',
+    // Respond with token and admin info
+    res.status(200).json({
       token,
-      user: { id: user._id, userType, userNumber },
+      admin: { id: admin._id, adminNumber: admin.adminNumber },
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { login };
+module.exports = { loginAdmin };

@@ -9,12 +9,38 @@ const AdminLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const userData = { adminNumber, password };
-    dispatch(login(userData));
-    navigate("/adminDashboard");
+  
+    console.log("Sending data to backend:", userData); // Debug log
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log("Login successful:", data); // Debug log
+        localStorage.setItem("token", data.token);
+        dispatch(login(data.admin));
+        navigate("/admin/adminDashboard");
+      } else {
+        console.error("Error response from backend:", data);
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
