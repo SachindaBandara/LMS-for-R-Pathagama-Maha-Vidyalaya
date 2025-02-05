@@ -1,10 +1,10 @@
-// backend/routes/authRoutes.js
+// routes/authRoutes.js
+const express = require("express");
+const { loginAdmin } = require("../controllers/authController");
 
-const express = require('express');
-const { login } = require('../controllers/authController');
 const router = express.Router();
 
-// POST: Login (Admin, Teacher, or Student)
-router.post('/login', login);
+// Login route
+router.post("/login", loginAdmin);
 
 module.exports = router;
