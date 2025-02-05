@@ -4,6 +4,7 @@ const Student = require('../models/Student');
 const Teacher = require('../models/Teacher');
 const Subject = require('../models/Subject');
 
+
 // Add grade
 exports.addGrade = async (req, res) => {
   const { gradeName } = req.body;
