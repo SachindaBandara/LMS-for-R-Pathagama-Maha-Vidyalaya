@@ -11,6 +11,8 @@ import AdminLogin from './pages/AdminLogin';
 import TeacherLogin from './pages/TeacherLogin';
 import StudentLogin from './pages/StudentLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
+import TeacherDashboard from './components/teacher/TeacherDashboard';
+import StudentDashboard from './components/student/StudentDashboard';
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path="/teacherLogin" element={<TeacherLogin />} />
         <Route path="/studentLogin" element={<StudentLogin />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
+        <Route path="/teacherDashboard" element={<TeacherDashboard />} />
+        <Route path="/studentDashboard" element={<StudentDashboard />} />
       </Routes>
       <ToastContainer />
     </Router>
