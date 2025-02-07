@@ -1,73 +1,90 @@
-// src/components/admin/CoursesPage.jsx
-import React, { useState } from 'react';
-import { FiPlus, FiEdit, FiTrash } from 'react-icons/fi';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { FiPlus, FiEdit, FiTrash } from "react-icons/fi";
 
 const CoursesPage = () => {
-  // Sample initial data
-  const [courses, setCourses] = useState([
-    { id: 1, grade: "Grade 10", subject: "Mathematics" },
-    { id: 2, grade: "Grade 10", subject: "Physics" },
-    { id: 3, grade: "Grade 11", subject: "Chemistry" },
-    { id: 4, grade: "Grade 12", subject: "Biology" },
-  ]);
-
+  const [courses, setCourses] = useState([]);
   const [selectedGrade, setSelectedGrade] = useState("Grade 10");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSubject, setCurrentSubject] = useState(null);
-  const [formData, setFormData] = useState({
-    grade: "",
-    subject: "",
-  });
+  const [formData, setFormData] = useState({ grade: "", subject: "" });
+  const [loading, setLoading] = useState(false);
 
-  // Handle grade selection
+  // Fetch courses on initial load
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/courses");
+      setCourses(response.data); // Assuming API returns an array of courses
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleGradeSelect = (grade) => {
     setSelectedGrade(grade);
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission (Add/Edit)
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (currentSubject) {
-      // Update existing subject
-      setCourses(
-        courses.map((course) =>
-          course.id === currentSubject.id ? { ...course, ...formData } : course
-        )
-      );
-    } else {
-      // Add new subject
-      const newSubject = { ...formData, id: Date.now() };
-      setCourses([...courses, newSubject]);
+    try {
+      if (currentSubject) {
+        // Update course
+        await axios.put(`/api/courses/${currentSubject._id}`, formData);
+        setCourses((prevCourses) =>
+          prevCourses.map((course) =>
+            course._id === currentSubject._id
+              ? { ...course, ...formData }
+              : course
+          )
+        );
+        toast.success("Course updated successfully!");
+      } else {
+        // Add new course
+        const response = await axios.post("/api/courses", formData);
+        setCourses([...courses, response.data]); // Assuming API returns the created course
+        toast.success("Course added successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving course:", error);
+      toast.error("Failed to save course.");
+    } finally {
+      setIsModalOpen(false);
+      setFormData({ grade: "", subject: "" });
+      setCurrentSubject(null);
     }
-    setIsModalOpen(false);
-    setFormData({ grade: "", subject: "" });
-    setCurrentSubject(null);
   };
 
-  // Handle edit subject
-  const handleEdit = (subject) => {
-    setCurrentSubject(subject);
-    setFormData(subject);
-    setIsModalOpen(true);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/courses/${id}`);
+      setCourses(courses.filter((course) => course._id !== id));
+      toast.success("Course deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      toast.error("Failed to delete course.");
+    }
   };
 
-  // Handle delete subject
-  const handleDelete = (id) => {
-    setCourses(courses.filter((course) => course.id !== id));
-  };
-
-  // Filter subjects by selected grade
-  const filteredSubjects = courses.filter((course) => course.grade === selectedGrade);
+  const filteredSubjects = courses.filter(
+    (course) => course.grade === selectedGrade
+  );
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar (Same as TeacherDashboard) */}
+      {/* Sidebar */}
       <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full">
         <div className="p-4 mb-8">
           <h2 className="text-2xl font-bold text-gold-500">Admin Portal</h2>
@@ -86,7 +103,6 @@ const CoursesPage = () => {
 
       {/* Main Content */}
       <main className="ml-64 flex-1 p-8">
-        {/* Header */}
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-maroon-900">Manage Courses</h1>
           <button
@@ -115,21 +131,28 @@ const CoursesPage = () => {
           ))}
         </div>
 
+        {/* Loader */}
+        {loading && <p>Loading courses...</p>}
+
         {/* Subject Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSubjects.map((subject) => (
-            <div key={subject.id} className="bg-white p-6 rounded-xl shadow-sm">
+            <div key={subject._id} className="bg-white p-6 rounded-xl shadow-sm">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-maroon-900">{subject.subject}</h2>
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => handleEdit(subject)}
+                    onClick={() => {
+                      setCurrentSubject(subject);
+                      setFormData(subject);
+                      setIsModalOpen(true);
+                    }}
                     className="p-2 text-gold-500 hover:bg-gold-100 rounded-full"
                   >
                     <FiEdit />
                   </button>
                   <button
-                    onClick={() => handleDelete(subject.id)}
+                    onClick={() => handleDelete(subject._id)}
                     className="p-2 text-red-500 hover:bg-red-100 rounded-full"
                   >
                     <FiTrash />
@@ -143,7 +166,7 @@ const CoursesPage = () => {
           ))}
         </div>
 
-        {/* Add/Edit Subject Modal */}
+        {/* Add/Edit Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
             <div className="bg-white p-8 rounded-lg w-full max-w-md">

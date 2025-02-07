@@ -1,26 +1,49 @@
-// studentController.js
-const Assignment = require('../models/Assignment');
+const Student = require('../models/Student');
 
-// Upload assignment
-exports.uploadAssignment = async (req, res) => {
-  const { studentId, subjectId } = req.body;
-  const file = req.file;
+// Create Student
+exports.createStudent = async (req, res) => {
   try {
-    const assignment = new Assignment({ studentId, subjectId, filePath: file.path });
-    await assignment.save();
-    res.status(201).json({ message: 'Assignment uploaded successfully', assignment });
+    const student = new Student(req.body);
+    await student.save();
+    res.status(201).json(student);
   } catch (error) {
-    res.status(500).json({ message: 'Error uploading assignment', error });
+    res.status(400).json({ message: error.message });
   }
 };
 
-// Get student dashboard
-exports.getStudentDashboard = async (req, res) => {
-  const { studentId } = req.params;
+// Get Students by Grade
+exports.getStudentsByGrade = async (req, res) => {
   try {
-    const assignments = await Assignment.find({ studentId });
-    res.status(200).json({ message: 'Dashboard fetched', assignments });
+    const students = await Student.find({ grade: req.query.grade }).select('-password');
+    res.json(students);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching dashboard', error });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update Student
+exports.updateStudent = async (req, res) => {
+  try {
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    ).select('-password');
+    
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    res.json(student);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Delete Student
+exports.deleteStudent = async (req, res) => {
+  try {
+    const student = await Student.findByIdAndDelete(req.params.id);
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+    res.json({ message: 'Student deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

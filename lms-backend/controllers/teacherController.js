@@ -1,26 +1,50 @@
-// teacherController.js
-const Material = require('../models/Material');
+const Teacher = require('../models/Teacher');
+const bcrypt = require('bcryptjs');
 
-// Upload materials
-exports.uploadMaterial = async (req, res) => {
-  const { teacherId, subjectId } = req.body;
-  const file = req.file;
+// Create Teacher
+exports.createTeacher = async (req, res) => {
   try {
-    const material = new Material({ teacherId, subjectId, filePath: file.path });
-    await material.save();
-    res.status(201).json({ message: 'Material uploaded successfully', material });
+    const teacher = new Teacher(req.body);
+    await teacher.save();
+    res.status(201).json(teacher);
   } catch (error) {
-    res.status(500).json({ message: 'Error uploading material', error });
+    res.status(400).json({ message: error.message });
   }
 };
 
-// Get teacher dashboard
-exports.getTeacherDashboard = async (req, res) => {
-  const { teacherId } = req.params;
+// Get All Teachers
+exports.getAllTeachers = async (req, res) => {
   try {
-    const materials = await Material.find({ teacherId });
-    res.status(200).json({ message: 'Dashboard fetched', materials });
+    const teachers = await Teacher.find().select('-password');
+    res.json(teachers);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching dashboard', error });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update Teacher
+exports.updateTeacher = async (req, res) => {
+  try {
+    const teacher = await Teacher.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    ).select('-password');
+    
+    if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
+    res.json(teacher);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Delete Teacher
+exports.deleteTeacher = async (req, res) => {
+  try {
+    const teacher = await Teacher.findByIdAndDelete(req.params.id);
+    if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
+    res.json({ message: 'Teacher deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

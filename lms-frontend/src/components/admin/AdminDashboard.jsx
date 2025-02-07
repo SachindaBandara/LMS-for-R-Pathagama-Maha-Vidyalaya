@@ -39,9 +39,15 @@ const AdminDashboard = () => {
               </a>
             </li>
             <li>
-              <a href="/admin/UsersPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/admin/TeachersPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiUsers className="mr-3" />
-                Users
+                Teachers
+              </a>
+            </li>
+            <li>
+              <a href="/admin/StudentsPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+                <FaGraduationCap className="mr-3" />
+                Students
               </a>
             </li>
             <li>
@@ -51,7 +57,7 @@ const AdminDashboard = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/admin/AnalyticsPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiActivity className="mr-3" />
                 Analytics
               </a>

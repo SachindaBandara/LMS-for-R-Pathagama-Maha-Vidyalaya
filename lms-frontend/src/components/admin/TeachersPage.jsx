@@ -1,60 +1,87 @@
-// src/pages/UsersPage.jsx
-import React, { useState } from 'react';
-import { FiUserPlus, FiEdit, FiTrash } from 'react-icons/fi';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { FiUserPlus, FiEdit, FiTrash } from "react-icons/fi";
 
-const UsersPage = () => {
-  // Sample initial data
-  const [teachers, setTeachers] = useState([
-    {
-      id: 1,
-      name: "Ms. Perera",
-      assignedClass: "Grade 10",
-      subjects: ["Mathematics", "Physics"],
-      teacherNumber: "T001",
-    },
-    {
-      id: 2,
-      name: "Mr. Silva",
-      assignedClass: "Grade 11",
-      subjects: ["Chemistry", "Biology"],
-      teacherNumber: "T002",
-    },
-  ]);
-
+const TeachersPage = () => {
+  const [teachers, setTeachers] = useState([]); // State for teachers
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTeacher, setCurrentTeacher] = useState(null);
-  const [formData, setFormData] = useState({
+
+  const initialState = {
     name: "",
     assignedClass: "",
     subjects: "",
     teacherNumber: "",
     password: "",
-  });
+  };
+  const [formData, setFormData] = useState(initialState);
 
-  // Handle form input changes
+  // Fetch teachers on component mount
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const response = await axios.get("/api/teachers");
+        if (Array.isArray(response.data)) {
+          setTeachers(response.data); // Ensure it's an array
+        } else {
+          toast.error("Unexpected data format from the server.");
+        }
+      } catch (error) {
+        toast.error("Failed to fetch teachers");
+      } finally {
+        setIsLoading(false); // Set loading to false
+      }
+    };
+    fetchTeachers();
+  }, []);
+
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission (Add/Edit)
-  const handleSubmit = (e) => {
+  // Handle add/edit form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (currentTeacher) {
-      // Update existing teacher
-      setTeachers(
-        teachers.map((teacher) =>
-          teacher.id === currentTeacher.id ? { ...teacher, ...formData } : teacher
-        )
+    try {
+      if (currentTeacher) {
+        // Update teacher
+        const response = await axios.put(
+          `/api/teachers/${currentTeacher._id}`,
+          formData
+        );
+        setTeachers(
+          teachers.map((teacher) =>
+            teacher._id === response.data._id ? response.data : teacher
+          )
+        );
+      } else {
+        // Add new teacher
+        const response = await axios.post("/api/teachers", formData);
+        setTeachers([...teachers, response.data]);
+      }
+      setIsModalOpen(false);
+      setFormData(initialState);
+      toast.success(`Teacher ${currentTeacher ? "updated" : "added"} successfully`);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Operation failed. Please try again."
       );
-    } else {
-      // Add new teacher
-      const newTeacher = { ...formData, id: Date.now() };
-      setTeachers([...teachers, newTeacher]);
     }
-    setIsModalOpen(false);
-    setFormData({ name: "", assignedClass: "", subjects: "", teacherNumber: "", password: "" });
-    setCurrentTeacher(null);
+  };
+
+  // Handle delete teacher
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/teachers/${id}`);
+      setTeachers(teachers.filter((teacher) => teacher._id !== id));
+      toast.success("Teacher deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete teacher");
+    }
   };
 
   // Handle edit teacher
@@ -64,14 +91,9 @@ const UsersPage = () => {
     setIsModalOpen(true);
   };
 
-  // Handle delete teacher
-  const handleDelete = (id) => {
-    setTeachers(teachers.filter((teacher) => teacher.id !== id));
-  };
-
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar (Same as TeacherDashboard) */}
+      {/* Sidebar */}
       <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full">
         <div className="p-4 mb-8">
           <h2 className="text-2xl font-bold text-gold-500">Teacher Portal</h2>
@@ -94,7 +116,11 @@ const UsersPage = () => {
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-maroon-900">Manage Teachers</h1>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setFormData(initialState);
+              setCurrentTeacher(null);
+              setIsModalOpen(true);
+            }}
             className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition duration-300"
           >
             <FiUserPlus className="inline mr-2" />
@@ -102,39 +128,45 @@ const UsersPage = () => {
           </button>
         </header>
 
-        {/* Teacher Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {teachers.map((teacher) => (
-            <div key={teacher.id} className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-maroon-900">{teacher.name}</h2>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleEdit(teacher)}
-                    className="p-2 text-gold-500 hover:bg-gold-100 rounded-full"
-                  >
-                    <FiEdit />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(teacher.id)}
-                    className="p-2 text-red-500 hover:bg-red-100 rounded-full"
-                  >
-                    <FiTrash />
-                  </button>
+        {/* Loading Indicator */}
+        {isLoading ? (
+          <p className="text-center text-gray-500">Loading teachers...</p>
+        ) : teachers.length === 0 ? (
+          <p className="text-center text-gray-500">No teachers found. Add a new teacher!</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {teachers.map((teacher) => (
+              <div key={teacher._id} className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-maroon-900">{teacher.name}</h2>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleEdit(teacher)}
+                      className="p-2 text-gold-500 hover:bg-gold-100 rounded-full"
+                    >
+                      <FiEdit />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(teacher._id)}
+                      className="p-2 text-red-500 hover:bg-red-100 rounded-full"
+                    >
+                      <FiTrash />
+                    </button>
+                  </div>
                 </div>
+                <p className="text-gray-600">
+                  <span className="font-semibold">Class:</span> {teacher.assignedClass}
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-semibold">Subjects:</span> {teacher.subjects.join(", ")}
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-semibold">Teacher Number:</span> {teacher.teacherNumber}
+                </p>
               </div>
-              <p className="text-gray-600">
-                <span className="font-semibold">Class:</span> {teacher.assignedClass}
-              </p>
-              <p className="text-gray-600">
-                <span className="font-semibold">Subjects:</span> {teacher.subjects.join(", ")}
-              </p>
-              <p className="text-gray-600">
-                <span className="font-semibold">Teacher Number:</span> {teacher.teacherNumber}
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Add/Edit Teacher Modal */}
         {isModalOpen && (
@@ -174,14 +206,19 @@ const UsersPage = () => {
                 </div>
                 <div>
                   <label htmlFor="subjects" className="block text-gray-700">
-                    Subjects
+                    Subjects (comma-separated)
                   </label>
                   <input
                     type="text"
                     id="subjects"
                     name="subjects"
                     value={formData.subjects}
-                    onChange={handleInputChange}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        subjects: e.target.value.split(",").map((s) => s.trim()),
+                      })
+                    }
                     className="w-full p-2 border border-gray-300 rounded-lg"
                     required
                   />
@@ -238,4 +275,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default TeachersPage;
