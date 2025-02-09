@@ -24,7 +24,7 @@ const Sidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <az
+                        <a
                             href="/admin/TeachersPage"
                             className="flex items-center p-3 transition-colors duration-300 ease-in-out hover:bg-gold-100 hover:bg-opacity-20 rounded-lg"
                         >
