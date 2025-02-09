@@ -13,7 +13,7 @@ const TeacherLogin = () => {
     e.preventDefault();
     const userData = { teacherNumber, password };
     dispatch(login(userData));
-    navigate('/teacherDashboard');
+    navigate('/teacher/teacherDashboard');
   };
 
   return (

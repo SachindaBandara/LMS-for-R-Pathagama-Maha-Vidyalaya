@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { FiPlus, FiEdit, FiTrash } from "react-icons/fi";
+import { FiPlus, FiEdit, FiTrash, FiUsers, FiBook, FiActivity, FiSettings } from "react-icons/fi";
+import { FaChartLine, FaGraduationCap } from "react-icons/fa";
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
@@ -87,14 +88,45 @@ const CoursesPage = () => {
       {/* Sidebar */}
       <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full">
         <div className="p-4 mb-8">
-          <h2 className="text-2xl font-bold text-gold-500">Admin Portal</h2>
+          <h2 className="text-2xl font-bold text-gold-500">R/Pathagama LMS</h2>
         </div>
+        
         <nav>
           <ul className="space-y-2">
             <li>
               <a href="#" className="flex items-center p-3 bg-gold-100 bg-opacity-10 rounded-lg">
-                <FiPlus className="mr-3 text-gold-500" />
+                <FaChartLine className="mr-3" />
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="/admin/TeachersPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+                <FiUsers className="mr-3" />
+                Teachers
+              </a>
+            </li>
+            <li>
+              <a href="/admin/StudentsPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+                <FaGraduationCap className="mr-3" />
+                Students
+              </a>
+            </li>
+            <li>
+              <a href="/admin/CoursesPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+                <FiBook className="mr-3 text-gold-500" />
                 Courses
+              </a>
+            </li>
+            <li>
+              <a href="/admin/AnalyticsPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+                <FiActivity className="mr-3" />
+                Analytics
+              </a>
+            </li>
+            <li>
+              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+                <FiSettings className="mr-3" />
+                Settings
               </a>
             </li>
           </ul>

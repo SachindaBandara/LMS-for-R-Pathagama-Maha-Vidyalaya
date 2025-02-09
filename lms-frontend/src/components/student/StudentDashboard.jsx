@@ -38,31 +38,31 @@ const StudentDashboard = () => {
         <nav>
           <ul className="space-y-2">
             <li>
-              <a href="#" className="flex items-center p-3 bg-gold-100 bg-opacity-10 rounded-lg">
+              <a href="/student/studentDasboard" className="flex items-center p-3 bg-gold-100 bg-opacity-10 rounded-lg">
                 <FaGraduationCap className="mr-3 text-gold-500" />
                 Dashboard
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/student/myCourses" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiBookOpen className="mr-3" />
                 My Courses
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/student/assignments" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiClipboard className="mr-3" />
                 Assignments
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/student/schedule" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiCalendar className="mr-3" />
                 Schedule
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
+              <a href="/student/grades" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
                 <FiBarChart className="mr-3" />
                 Grades
               </a>
@@ -84,11 +84,11 @@ const StudentDashboard = () => {
               <FiBell className="w-6 h-6 text-maroon-900" />
             </button>
             <div className="flex items-center">
-              <img 
+              {/* <img 
                 src="https://via.placeholder.com/40" 
                 alt="Student" 
                 className="w-10 h-10 rounded-full"
-              />
+              /> */}
             </div>
           </div>
         </header>

@@ -13,7 +13,7 @@ const StudentLogin = () => {
     e.preventDefault();
     const userData = { studentNumber, password };
     dispatch(login(userData));
-    navigate('/studentDashboard');
+    navigate('/student/studentDashboard');
   };
 
   return (

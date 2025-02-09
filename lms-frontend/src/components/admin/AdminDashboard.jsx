@@ -2,13 +2,16 @@
 import React from 'react';
 import { FiUsers, FiBook, FiDollarSign, FiActivity, FiSettings } from 'react-icons/fi';
 import { FaChartLine, FaGraduationCap } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
   const stats = [
     { title: "Total Students", value: "2,456", icon: <FaGraduationCap className="w-6 h-6" />, trend: "+12%" },
     { title: "Active Teachers", value: "48", icon: <FiUsers className="w-6 h-6" />, trend: "+5%" },
     { title: "Courses", value: "86", icon: <FiBook className="w-6 h-6" />, trend: "+23%" },
-    { title: "Revenue", value: "$12,450", icon: <FiDollarSign className="w-6 h-6" />, trend: "+18%" },
+    { title: "User Engagement", value: "78%", icon: <FiActivity className="w-6 h-6" />, trend: "+15%" },
   ];
 
   const recentActivities = [
@@ -85,11 +88,6 @@ const AdminDashboard = () => {
               </svg>
             </button>
             <div className="flex items-center">
-              <img 
-                src="https://via.placeholder.com/40" 
-                alt="Admin" 
-                className="w-10 h-10 rounded-full"
-              />
               <span className="ml-2">Admin User</span>
             </div>
           </div>
@@ -113,12 +111,12 @@ const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-xl shadow-sm">
             <h3 className="text-xl font-semibold mb-4">Enrollment Trends</h3>
             <div className="h-64 bg-gray-100 rounded-lg">
               {/* Chart would go here */}
+              <canvas id="enrollmentChart"></canvas>
             </div>
           </div>
           
@@ -161,7 +159,36 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {/* Table rows would go here */}
+                <tr>
+                  <td className="py-3">Pasindu Pathum</td>
+                  <td className="py-3">Student</td>
+                  <td className="py-3">Active</td>
+                  <td className="py-3">10 min ago</td>
+                  <td className="py-3">
+                    <button className="text-blue-500 hover:underline">Edit</button>
+                    <button className="text-red-500 hover:underline ml-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-3">Ms. Perera</td>
+                  <td className="py-3">Teacher</td>
+                  <td className="py-3">Inactive</td>
+                  <td className="py-3">1 day ago</td>
+                  <td className="py-3">
+                    <button className="text-blue-500 hover:underline">Edit</button>
+                    <button className="text-red-500 hover:underline ml-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-3">Mr. Saman Kumara</td>
+                  <td className="py-3">Admin</td>
+                  <td className="py-3">Active</td>
+                  <td className="py-3">5 min ago</td>
+                  <td className="py-3">
+                    <button className="text-blue-500 hover:underline">Edit</button>
+                    <button className="text-red-500 hover:underline ml-2">Delete</button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

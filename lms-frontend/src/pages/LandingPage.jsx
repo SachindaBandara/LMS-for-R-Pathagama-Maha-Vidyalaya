@@ -18,7 +18,7 @@ const LandingPage = () => {
       {/* Header Section */}
       <header className="text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-gold-500 mb-2">
-          R/Pathagama School
+          R / Pathagama Maha Vidyalaya
         </h1>
         <p className="text-lg md:text-xl text-gray-200">Learning Management System</p>
       </header>

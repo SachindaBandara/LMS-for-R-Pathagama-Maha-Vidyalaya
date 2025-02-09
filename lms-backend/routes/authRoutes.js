@@ -1,10 +1,10 @@
-// routes/authRoutes.js
 const express = require("express");
-const { loginAdmin } = require("../controllers/authController");
+const { loginAdmin, loginTeacher } = require("../controllers/authController");
 
 const router = express.Router();
 
-// Login route
+// Login routes
 router.post("/login", loginAdmin);
+router.post("/login", loginTeacher); 
 
 module.exports = router;

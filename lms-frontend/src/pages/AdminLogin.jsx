@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AdminLogin = () => {
   const [adminNumber, setAdminNumber] = useState("");
@@ -12,9 +13,7 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const userData = { adminNumber, password };
-  
-    console.log("Sending data to backend:", userData); // Debug log
-  
+
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
@@ -23,24 +22,24 @@ const AdminLogin = () => {
         },
         body: JSON.stringify(userData),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        console.log("Login successful:", data); // Debug log
+        toast.success("Login successful!");
+        console.log("Login successful:", data);
         localStorage.setItem("token", data.token);
         dispatch(login(data.admin));
         navigate("/admin/adminDashboard");
       } else {
         console.error("Error response from backend:", data);
-        alert(data.message || "Login failed");
+        toast.error(data.message || "Login failed. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -55,7 +54,10 @@ const AdminLogin = () => {
         <form onSubmit={handleLogin} className="space-y-4">
           {/* Admin Number Input */}
           <div>
-            <label htmlFor="adminNumber" className="block text-lg font-medium text-gray-700">
+            <label
+              htmlFor="adminNumber"
+              className="block text-lg font-medium text-gray-700"
+            >
               Admin Number
             </label>
             <input
@@ -70,7 +72,10 @@ const AdminLogin = () => {
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-lg font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-lg font-medium text-gray-700"
+            >
               Password
             </label>
             <input
