@@ -238,7 +238,9 @@ const StudentsPage = () => {
                 <h2 className="text-2xl font-bold text-maroon-900 mb-6">
                   {currentStudent ? "Edit Student" : "Add Student"}
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} 
+                
+                  className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Input fields */}
                   </div>

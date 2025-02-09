@@ -8,12 +8,16 @@ export default {
     extend: {
       colors: {
         maroon: {
-          900: '#4A0000', // Dark maroon
+          900: '#4E0A0A', // Dark maroon
         },
         gold: {
-          500: '#FFD700', // Gold
+          500: '#F9C524', // Gold
           600: '#E5C100', // Darker gold for hover
         },
+      },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+        kumbh: ['"Kumbh Sans"', 'sans-serif'],
       },
     },
   },
