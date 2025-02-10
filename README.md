@@ -1,4 +1,4 @@
-#Learning Management System (LMS)
+##Learning Management System (LMS)
 
 ## Overview
 The **LMS** is a comprehensive Learning Management System designed to streamline the teaching and learning experience. Built using the modern **MERN Stack (MongoDB, Express.js, React, and Node.js)**, it provides a robust and scalable platform for managing courses, students, assignments, and analytics.
