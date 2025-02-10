@@ -1,33 +1,36 @@
-## Learning Management System (For R/Pthagama Maha Vidyalaya)
+# Learning Management System (For R/Pathagama Maha Vidyalaya)
 
 ## Overview
-The **LMS** is a comprehensive Learning Management System designed to streamline the teaching and learning experience. Built using the modern **MERN Stack (MongoDB, Express.js, React, and Node.js)**, it provides a robust and scalable platform for managing courses, students, assignments, and analytics.
+The **LMS** is a feature-rich Learning Management System crafted to enhance the teaching and learning process. Developed using the modern **MERN Stack (MongoDB, Express.js, React, and Node.js)**, it provides a powerful and scalable platform for managing courses, students, assignments, and reports.
 
 ## Key Features
-- **Teacher Dashboard**: Manage courses, track assignments, and view analytics.
-- **Student Dashboard**: Access assignments, grades, and schedules.
-- **Authentication**: Secure login for teachers and students with role-based access.
-- **Responsive Design**: Fully optimized for desktops, tablets, and mobile devices.
+- **Teacher Dashboard**: Oversee courses, monitor assignments, and analyze reports.
+- **Student Dashboard**: View assignments, track grades, and manage schedules.
+- **Authentication**: Secure access for teachers and students with role-based permissions.
+- **Responsive Design**: Optimized for seamless use on desktops, tablets, and mobile devices.
+- **Real-time Notifications**: Instant updates for assignments and important announcements.
+- **Discussion Forum**: A collaborative space for students and teachers to interact.
 
 ## Technologies Used
-- **Frontend**: React.js (with Vite for fast development)
+- **Frontend**: React.js (with Vite for efficient development)
 - **Backend**: Node.js with Express.js
 - **Database**: MongoDB (NoSQL database)
 - **State Management**: Redux Toolkit
 - **Styling**: Tailwind CSS
 - **Icons**: React Icons
 - **Notifications**: React Toastify
+- **Authentication**: JSON Web Tokens (JWT)
 
 ## Installation
 ### Prerequisites
 - Node.js (v16 or higher)
-- MongoDB
+- MongoDB (local or cloud-based like MongoDB Atlas)
 
 ### Steps to Run the Project Locally
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-repo/GAP-Pathum-LMS.git
-   cd GAP-Pathum-LMS
+   git clone https://github.com/your-repo/Pathagama-LMS.git
+   cd Pathagama-LMS
    ```
 
 2. **Install Dependencies**:
@@ -48,6 +51,7 @@ The **LMS** is a comprehensive Learning Management System designed to streamline
    PORT=5000
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_secret_key
+   CLIENT_URL=http://localhost:3000
    ```
 
 4. **Run the Application**:
@@ -69,7 +73,7 @@ The **LMS** is a comprehensive Learning Management System designed to streamline
 
 ## Folder Structure
 ```
-GAP-Pathum-LMS/
+Pathagama-LMS/
 ├── client/                 # Frontend React application
 │   ├── public/             # Static assets
 │   ├── src/                # React source code
@@ -82,41 +86,45 @@ GAP-Pathum-LMS/
 │   ├── routes/             # API routes
 │   ├── controllers/        # Request handlers
 │   ├── middleware/         # Authentication and other middleware
+│   ├── config/             # Configuration files (e.g., database connection)
 │   └── server.js           # Entry point for the backend
 └── README.md               # Project documentation
 ```
 
 ## API Endpoints
 ### Authentication
-- `POST /api/auth/login/teacher`: Teacher login
-- `POST /api/auth/login/student`: Student login
+- `POST /api/auth/login/teacher`: Teacher authentication
+- `POST /api/auth/login/student`: Student authentication
 
 ### Teacher Routes
-- `GET /api/teachers/:id`: Get teacher details
-- `POST /api/teachers`: Create a teacher
-- `PUT /api/teachers/:id`: Update teacher details
+- `GET /api/teachers/:id`: Retrieve teacher details
+- `POST /api/teachers`: Register a teacher
+- `PUT /api/teachers/:id`: Modify teacher details
+- `DELETE /api/teachers/:id`: Delete a teacher
 
 ### Student Routes
-- `GET /api/students/:id`: Get student details
-- `POST /api/students`: Create a student
-- `PUT /api/students/:id`: Update student details
+- `GET /api/students/:id`: Retrieve student details
+- `POST /api/students`: Register a student
+- `PUT /api/students/:id`: Modify student details
+- `DELETE /api/students/:id`: Delete a student
 
 ## Future Enhancements
-- Integration with third-party services for video conferencing and document sharing.
-- Real-time notifications for assignments and events.
-- AI-powered analytics for personalized feedback.
+- Integration with third-party services for virtual classrooms and document sharing.
+- AI-driven analytics for performance insights and personalized learning recommendations.
+- Mobile application support for Android and iOS.
+- Dark mode for improved accessibility and user experience.
 
 ## Contributing
-We welcome contributions! To contribute:
+We encourage contributions! To contribute:
 1. Fork the repository.
 2. Create a feature branch.
 3. Commit your changes.
-4. Create a pull request.
+4. Submit a pull request.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-**GAP-Pathum LMS**: Empowering education through technology.
+**Pathagama LMS**: Advancing education through digital innovation.
 
