@@ -58,10 +58,10 @@ exports.getAllTeachers = async (req, res) => {
   }
 };
 
-// Get a Single Teacher by ID
+// Get a Single Teacher by ID (including all details)
 exports.getTeacherById = async (req, res) => {
   try {
-    const teacher = await Teacher.findById(req.params.id).select('-password'); // Exclude password
+    const teacher = await Teacher.findById(req.params.id); // Get all details without excluding anything
     if (!teacher) {
       return res.status(404).json({ message: 'Teacher not found' });
     }

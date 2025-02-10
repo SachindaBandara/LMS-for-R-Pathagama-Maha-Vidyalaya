@@ -43,11 +43,14 @@ const loginTeacher = async (req, res) => {
     // Check if teacher exists
     const teacher = await Teacher.findOne({ teacherNumber });
     if (!teacher) {
+      console.log("Teacher not found with teacherNumber:", teacherNumber);
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Compare passwords directly (plaintext)
-    if (teacher.password !== password) {
+    // Compare passwords using bcrypt.compare
+    const isPasswordMatch = await bcrypt.compare(password, teacher.password);
+    if (!isPasswordMatch) {
+      console.log("Password mismatch for teacherNumber:", teacherNumber);
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -66,6 +69,5 @@ const loginTeacher = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 module.exports = { loginAdmin, loginTeacher };

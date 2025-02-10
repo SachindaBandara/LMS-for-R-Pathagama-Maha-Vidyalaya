@@ -3,6 +3,7 @@ import { FiBook, FiClock, FiAlertTriangle, FiCheckCircle, FiBarChart, FiBookOpen
 import { FaGraduationCap, FaRegChartBar } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Sidebar from './Sidebar';
 
 const StudentSchedulePage = () => {
   const [schedule, setSchedule] = useState([]);
@@ -123,46 +124,7 @@ const StudentSchedulePage = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
        {/* Sidebar */}
-       <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full">
-        <div className="p-4 mb-8">
-          <h2 className="text-2xl font-bold text-gold-500">Student Portal</h2>
-        </div>
-        
-        <nav>
-          <ul className="space-y-2">
-            <li>
-              <a href="/student/studentDasboard" className="flex items-center p-3 bg-gold-100 bg-opacity-10 rounded-lg">
-                <FaGraduationCap className="mr-3" />
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="/student/myCourses" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiBookOpen className="mr-3" />
-                My Courses
-              </a>
-            </li>
-            <li>
-              <a href="/student/studentAssignments" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiClipboard className="mr-3" />
-                Assignments
-              </a>
-            </li>
-            <li>
-              <a href="/student/scedule" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiCalendar className="mr-3  text-gold-500" />
-                Schedule
-              </a>
-            </li>
-            <li>
-              <a href="/student/grades" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiBarChart className="mr-3" />
-                Grades
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+<Sidebar/>
 
       <main className="ml-64 flex-1 p-8">
         <header className="mb-8">

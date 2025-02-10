@@ -3,6 +3,7 @@ import { FiClipboard, FiCheckCircle, FiAlertTriangle, FiClock, FiUpload, FiBookO
 import { FaGraduationCap, FaRegChartBar } from 'react-icons/fa';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
+import Sidebar from './Sidebar'
 
 // Register necessary Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, BarElement);
@@ -37,46 +38,7 @@ const Grades = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full">
-        <div className="p-4 mb-8">
-          <h2 className="text-2xl font-bold text-gold-500">Student Portal</h2>
-        </div>
-
-        <nav>
-          <ul className="space-y-2">
-            <li>
-              <a href="/student/studentDashboard" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiBarChart className="mr-3 " />
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="/student/myCourses" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiBookOpen className="mr-3" />
-                My Courses
-              </a>
-            </li>
-            <li>
-              <a href="/student/studentAssignments" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiClipboard className="mr-3" />
-                Assignments
-              </a>
-            </li>
-            <li>
-              <a href="/student/schedule" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiCalendar className="mr-3" />
-                Schedule
-              </a>
-            </li>
-            <li>
-              <a href="/student/grades" className="flex items-center p-3 bg-gold-100 bg-opacity-10 rounded-lg">
-                <FiBarChart className="mr-3 text-gold-500" />
-                Grades
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+ <Sidebar/>
 
       {/* Main Content */}
       <main className="ml-64 flex-1 p-8">

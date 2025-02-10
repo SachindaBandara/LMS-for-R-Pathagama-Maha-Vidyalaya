@@ -20,6 +20,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
+
+app.use("/api/admin", require("./routes/adminRoutes"));
+
 app.use('/api/teachers', require('./routes/teacherRoutes'));
 app.use("/api/courses", require("./routes/courseRoutes"));
 app.use("/api/students", require("./routes/studentRoutes"));

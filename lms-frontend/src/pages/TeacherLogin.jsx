@@ -1,20 +1,49 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import axios from 'axios';
+import { toast } from "react-toastify";
 
 const TeacherLogin = () => {
-  const [teacherNumber, setTeacherNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [teacherNumber, setTeacherNumber] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const userData = { teacherNumber, password };
-    dispatch(login(userData));
-    navigate('/teacher/teacherDashboard');
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login/teacher", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        toast.success("Login successful!");
+        
+        // Store the token and teacherId in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("teacherId", data.teacherId);
+      
+        // Navigate to the teacher dashboard
+        navigate("/teacher/teacherDashboard");
+      } else {
+        console.error("Error response from backend:", data);
+        toast.error(data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again.");
+    }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -73,6 +102,7 @@ const TeacherLogin = () => {
           </a>
         </div>
       </div>
+
     </div>
   );
 };

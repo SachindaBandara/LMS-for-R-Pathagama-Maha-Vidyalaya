@@ -1,138 +1,112 @@
 import React, { useEffect, useState } from 'react';
-import { FiBookOpen, FiUsers, FiCalendar, FiClipboard, FiBarChart } from 'react-icons/fi';
-import { FaChalkboardTeacher, FaRegChartBar } from 'react-icons/fa';
-import axios from 'axios'; // Add axios for API calls
+import { FiBookOpen, FiUsers, FiCalendar, FiClipboard } from 'react-icons/fi';
+import Sidebar from './Sidebar';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const TeacherDashboard = () => {
   const [teacherData, setTeacherData] = useState({
     stats: [],
     courses: [],
     upcomingEvents: [],
-    teacherInfo: {} // Holds teacher's name, assigned class, and subject
+    teacherInfo: {}
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // Fetch teacher data on component mount
     const fetchData = async () => {
       try {
-        // Dummy teacher information
-        const teacherResponse = {
-          data: {
-            name: "Ms. Perera",
-            assignedClass: "Class 3A",
-            subject: "Mathematics"
-          }
-        };
-
+        const teacherId = localStorage.getItem("teacherId");
+        const token = localStorage.getItem("token");
+  
+        // Ensure teacherId exists
+        if (!teacherId || !token) {
+          toast.error("Authentication error. Please log in again.");
+          navigate("/teacherLogin");
+          return;
+        }        
+  
+        // Fetch teacher-specific data
+          
+        const teacherResponse = await axios.get(`http://localhost:5000/api/teachers/67a6c6db28841d1de10b2865`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
         // Dummy data for stats, courses, and upcoming events
         const statsResponse = {
           data: [
             { title: "Total Students", value: 120, trend: "+5%", icon: <FiUsers /> },
             { title: "Courses Taught", value: 5, trend: "-2%", icon: <FiBookOpen /> },
             { title: "Assignments Pending", value: 3, trend: "+1", icon: <FiClipboard /> },
-            { title: "Upcoming Events", value: 2, trend: "+1", icon: <FiCalendar /> }
-          ]
+            { title: "Upcoming Events", value: 2, trend: "+1", icon: <FiCalendar /> },
+          ],
         };
-
+  
         const coursesResponse = {
           data: [
             { id: 1, name: "Math 101", students: 30, progress: 60 },
             { id: 2, name: "Science 102", students: 25, progress: 80 },
             { id: 3, name: "English 103", students: 35, progress: 45 },
-            { id: 4, name: "History 104", students: 40, progress: 70 }
-          ]
+            { id: 4, name: "History 104", students: 40, progress: 70 },
+          ],
         };
-
+  
         const eventsResponse = {
           data: [
             { id: 1, title: "Math Exam", date: "2025-02-20", time: "10:00 AM" },
-            { id: 2, title: "Science Lab", date: "2025-02-22", time: "02:00 PM" }
-          ]
+            { id: 2, title: "Science Lab", date: "2025-02-22", time: "02:00 PM" },
+          ],
         };
-
+  
         // Update state with fetched data
         setTeacherData({
           stats: statsResponse.data,
           courses: coursesResponse.data,
           upcomingEvents: eventsResponse.data,
-          teacherInfo: teacherResponse.data,
+          teacherInfo: teacherResponse.data, // Ensure this contains the correct teacher data
         });
       } catch (error) {
-        console.error("Error fetching data", error);
+        console.error("Error fetching teacher data", error);
+        toast.error("Failed to fetch teacher data. Please try again.");
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, [navigate]);
+  
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("teacherId");
+    navigate("/teacherLogin");
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full">
-        <div className="p-4 mb-8">
-          <h2 className="text-2xl font-bold text-gold-500">Teacher Portal</h2>
-        </div>
-        
-        <nav>
-          <ul className="space-y-2">
-            <li>
-              <a href="/teacher/teacherDasboard" className="flex items-center p-3 bg-gold-100 bg-opacity-10 rounded-lg">
-                <FaChalkboardTeacher className="mr-3 text-gold-500" />
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="/teacher/myCourses" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiBookOpen className="mr-3" />
-                My Courses
-              </a>
-            </li>
-            <li>
-              <a href="/teacher/assignments" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiClipboard className="mr-3" />
-                Assignments
-              </a>
-            </li>
-            <li>
-              <a href="/teacher/students" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiUsers className="mr-3" />
-                Students
-              </a>
-            </li>
-            <li>
-              <a href="/teacher/analytics" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiBarChart className="mr-3" />
-                Analytics
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+      <Sidebar />
 
-      {/* Main Content */}
       <main className="ml-64 flex-1 p-8">
-        {/* Header */}
-        <header className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-maroon-900">Welcome, {teacherData.teacherInfo.name || 'Ms. Perera'}</h1>
-            <p className="text-gray-600">
-              {teacherData.teacherInfo.assignedClass ? `Class: ${teacherData.teacherInfo.assignedClass}` : 'Assigned Class: Not Available'} 
-              {teacherData.teacherInfo.subject ? ` | Subject: ${teacherData.teacherInfo.subject}` : ' | Subject: Not Available'}
-            </p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button className="p-2 hover:bg-gray-200 rounded-full">
-              <FiCalendar className="w-6 h-6 text-maroon-900" />
-            </button>
-            <div className="flex items-center">
-              {/* <img 
-                src="https://via.placeholder.com/40" 
-                alt="Teacher" 
-                className="w-10 h-10 rounded-full"
-              /> */}
-            </div>
-          </div>
-        </header>
+      <header className="flex justify-between items-center mb-8">
+  <div>
+    <h1 className="text-3xl font-bold text-maroon-900">
+      Welcome, {teacherData.teacherInfo?.name ?? "Teacher"}
+    </h1>
+    <p className="text-gray-600">
+      {teacherData.teacherInfo?.assignedClass
+        ? `Class: ${teacherData.teacherInfo.assignedClass}`
+        : "Assigned Class: Not Available"}
+      {teacherData.teacherInfo?.subjects && teacherData.teacherInfo.subjects.length > 0
+        ? ` | Subjects: ${teacherData.teacherInfo.subjects.join(", ")}`
+        : " | Subjects: Not Available"}
+    </p>
+  </div>
+  <button onClick={handleLogout} className="text-sm text-red-500">
+    Logout
+  </button>
+</header>
+
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -216,27 +190,26 @@ const TeacherDashboard = () => {
               <tbody>
                 {/* Dummy Data for Submissions */}
                 <tr>
-  <td className="py-3">Dinesh Perera</td>
-  <td className="py-3">Math Homework 1</td>
-  <td className="py-3">Submitted</td>
-  <td className="py-3">2025-02-05</td>
-  <td className="py-3">A</td>
-</tr>
-<tr>
-  <td className="py-3">Nadeesha Kumari</td>
-  <td className="py-3">Science Lab Report</td>
-  <td className="py-3">Pending</td>
-  <td className="py-3">-</td>
-  <td className="py-3">-</td>
-</tr>
-<tr>
-  <td className="py-3">Kumudu Silva</td>
-  <td className="py-3">English Essay</td>
-  <td className="py-3">Submitted</td>
-  <td className="py-3">2025-02-06</td>
-  <td className="py-3">B+</td>
-</tr>
-
+                  <td className="py-3">Dinesh Perera</td>
+                  <td className="py-3">Math Homework 1</td>
+                  <td className="py-3">Submitted</td>
+                  <td className="py-3">2025-02-05</td>
+                  <td className="py-3">A</td>
+                </tr>
+                <tr>
+                  <td className="py-3">Nadeesha Kumari</td>
+                  <td className="py-3">Science Lab Report</td>
+                  <td className="py-3">Pending</td>
+                  <td className="py-3">-</td>
+                  <td className="py-3">-</td>
+                </tr>
+                <tr>
+                  <td className="py-3">Kumudu Silva</td>
+                  <td className="py-3">English Essay</td>
+                  <td className="py-3">Submitted</td>
+                  <td className="py-3">2025-02-06</td>
+                  <td className="py-3">B+</td>
+                </tr>
               </tbody>
             </table>
           </div>

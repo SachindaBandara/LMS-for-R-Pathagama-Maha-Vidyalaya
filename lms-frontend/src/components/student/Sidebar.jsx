@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaChartLine, FaGraduationCap } from "react-icons/fa";
-import { FiUsers, FiBook, FiActivity, FiSettings } from "react-icons/fi";
+import { FaGraduationCap } from "react-icons/fa";
+import { FiBookOpen, FiClipboard, FiCalendar, FiBarChart } from "react-icons/fi";
 
 const Sidebar = () => {
     // State to track the active link
@@ -10,19 +10,18 @@ const Sidebar = () => {
     const [hoverLink, setHoverLink] = useState("");
 
     const menuItems = [
-        { name: "Dashboard", icon: <FaChartLine className="mr-3" />, link: "/admin/AdminDashboard" },
-        { name: "Teachers", icon: <FiUsers className="mr-3" />, link: "/admin/TeachersPage" },
-        { name: "Students", icon: <FaGraduationCap className="mr-3" />, link: "/admin/StudentsPage" },
-        { name: "Courses", icon: <FiBook className="mr-3" />, link: "/admin/CoursesPage" },
-        { name: "Analytics", icon: <FiActivity className="mr-3" />, link: "/admin/AnalyticsPage" },
-        { name: "Settings", icon: <FiSettings className="mr-3" />, link: "#" },
+        { name: "Dashboard", icon: <FaGraduationCap className="mr-3" />, link: "/student/studentDasboard" },
+        { name: "My Courses", icon: <FiBookOpen className="mr-3" />, link: "/student/myCourses" },
+        { name: "Assignments", icon: <FiClipboard className="mr-3" />, link: "/student/assignments" },
+        { name: "Schedule", icon: <FiCalendar className="mr-3" />, link: "/student/schedule" },
+        { name: "Grades", icon: <FiBarChart className="mr-3" />, link: "/student/grades" },
     ];
 
     return (
         <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full transition-transform duration-300 ease-in-out">
             {/* Brand Logo */}
             <div className="p-4 mb-8">
-                <h2 className="text-2xl font-bold text-gold-500">R/Pathagama LMS</h2>
+                <h2 className="text-2xl font-bold text-gold-500">Student Portal</h2>
             </div>
 
             {/* Navigation Menu */}
@@ -37,7 +36,7 @@ const Sidebar = () => {
                                         ? "bg-gold-500 text-maroon-900"
                                         : hoverLink === item.name
                                         ? "hover:bg-gold-500 hover:text-maroon-900"
-                                        : "hover:bg-gold-500 hover:text-maroon-900"
+                                        : "hover:bg-gold-100 hover:bg-opacity-10"
                                 }`}
                                 onClick={() => setActiveLink(item.name)}
                                 onMouseEnter={() => setHoverLink(item.name)}

@@ -3,6 +3,7 @@ import React from 'react';
 import { FiUsers, FiBook, FiDollarSign, FiActivity, FiSettings } from 'react-icons/fi';
 import { FaChartLine, FaGraduationCap } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar'
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -28,52 +29,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-maroon-900 text-white p-4 fixed h-full">
-        <div className="p-4 mb-8">
-          <h2 className="text-2xl font-bold text-gold-500">R/Pathagama LMS</h2>
-        </div>
-        
-        <nav>
-          <ul className="space-y-2">
-            <li>
-              <a href="#" className="flex items-center p-3 bg-gold-100 bg-opacity-10 rounded-lg">
-                <FaChartLine className="mr-3 text-gold-500" />
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="/admin/TeachersPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiUsers className="mr-3" />
-                Teachers
-              </a>
-            </li>
-            <li>
-              <a href="/admin/StudentsPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FaGraduationCap className="mr-3" />
-                Students
-              </a>
-            </li>
-            <li>
-              <a href="/admin/CoursesPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiBook className="mr-3" />
-                Courses
-              </a>
-            </li>
-            <li>
-              <a href="/admin/AnalyticsPage" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiActivity className="mr-3" />
-                Analytics
-              </a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center p-3 hover:bg-gold-100 hover:bg-opacity-10 rounded-lg">
-                <FiSettings className="mr-3" />
-                Settings
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+<Sidebar/>
 
       {/* Main Content */}
       <main className="ml-64 flex-1 p-8">
@@ -182,7 +138,7 @@ const AdminDashboard = () => {
                 <tr>
                   <td className="py-3">Mr. Saman Kumara</td>
                   <td className="py-3">Admin</td>
-                  <td className="py-3">Active</td>
+                  <td className="py-3">Active</td>zzzzzzzzzzzzzzzzzzzzz
                   <td className="py-3">5 min ago</td>
                   <td className="py-3">
                     <button className="text-blue-500 hover:underline">Edit</button>

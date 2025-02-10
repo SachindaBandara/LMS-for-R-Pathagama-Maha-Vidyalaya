@@ -2,7 +2,7 @@
 const Grade = require('../models/Grade');
 const Student = require('../models/Student');
 const Teacher = require('../models/Teacher');
-const Subject = require('../models/Subject');
+const Subject = require('../models/Course');
 
 
 // Add grade
@@ -41,4 +41,40 @@ exports.addTeacher = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error adding teacher', error });
   }
+};
+
+// Get total number of students
+const getTotalStudents = async () => {
+  try {
+    const count = await Student.countDocuments();
+    return count;
+  } catch (error) {
+    throw new Error('Failed to fetch student count');
+  }
+};
+
+// Get number of active teachers
+const getActiveTeachers = async () => {
+  try {
+    const count = await Teacher.countDocuments({ status: 'active' });
+    return count;
+  } catch (error) {
+    throw new Error('Failed to fetch active teachers count');
+  }
+};
+
+// Get total number of courses
+const getTotalCourses = async () => {
+  try {
+    const count = await Course.countDocuments();
+    return count;
+  } catch (error) {
+    throw new Error('Failed to fetch course count');
+  }
+};
+
+module.exports = {
+  getTotalStudents,
+  getActiveTeachers,
+  getTotalCourses,
 };

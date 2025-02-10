@@ -4,7 +4,7 @@ const { loginAdmin, loginTeacher } = require("../controllers/authController");
 const router = express.Router();
 
 // Login routes
-router.post("/login", loginAdmin);
-router.post("/login", loginTeacher); 
+router.post("/login/admin", loginAdmin); 
+router.post("/login/teacher", loginTeacher); 
 
 module.exports = router;

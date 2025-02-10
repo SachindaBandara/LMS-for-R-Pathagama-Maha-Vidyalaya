@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FiUserPlus, FiEdit, FiTrash } from "react-icons/fi";
-import Sidebar from "./Sidebar"; // Import the Sidebar component
+import { FiActivity, FiBook, FiSettings, FiUsers } from "react-icons/fi";
+import { FaChartLine, FaGraduationCap } from "react-icons/fa";
+import Sidebar from './Sidebar';
 
 const StudentsPage = () => {
   // State management
@@ -112,8 +114,7 @@ const StudentsPage = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <Sidebar />
+    <Sidebar/>
 
       {/* Main Content */}
       <main className="ml-64 flex-1 p-4 md:p-8">
@@ -240,7 +241,164 @@ const StudentsPage = () => {
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Input fields */}
+                    {/* Student Number */}
+                    <div>
+                      <label
+                        htmlFor="studentNumber"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Student Number
+                      </label>
+                      <input
+                        type="text"
+                        id="studentNumber"
+                        name="studentNumber"
+                        value={formData.studentNumber}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        required
+                      />
+                    </div>
+
+                    {/* Name */}
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        required
+                      />
+                    </div>
+
+                    {/* Gender */}
+                    <div>
+                      <label
+                        htmlFor="gender"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Gender
+                      </label>
+                      <select
+                        id="gender"
+                        name="gender"
+                        value={formData.gender}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        required
+                      >
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+
+                    {/* Birthday */}
+                    <div>
+                      <label
+                        htmlFor="birthday"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Birthday
+                      </label>
+                      <input
+                        type="date"
+                        id="birthday"
+                        name="birthday"
+                        value={formData.birthday}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        required
+                      />
+                    </div>
+
+                    {/* Grade */}
+                    <div>
+                      <label
+                        htmlFor="grade"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Grade
+                      </label>
+                      <select
+                        id="grade"
+                        name="grade"
+                        value={formData.grade}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        required
+                      >
+                        <option value="">Select Grade</option>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <option key={i + 1} value={`Grade ${i + 1}`}>
+                            Grade {i + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Telephone */}
+                    <div>
+                      <label
+                        htmlFor="telephone"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Telephone
+                      </label>
+                      <input
+                        type="tel"
+                        id="telephone"
+                        name="telephone"
+                        value={formData.telephone}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Address (Full Width) */}
+                  <div>
+                    <label
+                      htmlFor="address"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+
+                  {/* Password (Full Width) */}
+                  <div>
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                      required={!currentStudent}
+                    />
                   </div>
 
                   {/* Form Actions */}
