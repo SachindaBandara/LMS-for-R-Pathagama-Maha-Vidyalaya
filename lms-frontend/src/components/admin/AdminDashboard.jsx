@@ -1,12 +1,20 @@
 // src/components/admin/AdminDashboard.jsx
-import React from 'react';
-import { FiUsers, FiBook, FiDollarSign, FiActivity, FiSettings } from 'react-icons/fi';
+import React, { useEffect } from 'react';
+import { FiUsers, FiBook, FiActivity } from 'react-icons/fi';
 import { FaChartLine, FaGraduationCap } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from './Sidebar'
+import Sidebar from './Sidebar';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+
+  // Check for authentication token on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/adminLogin");
+    }
+  }, [navigate]);
 
   const stats = [
     { title: "Total Students", value: "2,456", icon: <FaGraduationCap className="w-6 h-6" />, trend: "+12%" },
@@ -22,29 +30,34 @@ const AdminDashboard = () => {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove the token
-    navigate("/adminLogin"); // Redirect to login page
+    localStorage.removeItem("token"); // Remove the token on logout
+    navigate("/adminLogin"); // Redirect to the login page
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-<Sidebar/>
+      <Sidebar />
 
       {/* Main Content */}
       <main className="ml-64 flex-1 p-8">
-        {/* Header */}
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-maroon-900">Admin Dashboard</h1>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-8">
             <button className="p-2 hover:bg-gray-200 rounded-full">
               <span className="sr-only">Notifications</span>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
             </button>
-            <div className="flex items-center">
-              <span className="ml-2">Admin User</span>
+            <div className="flex items-center space-x-8">
+              <span>Admin User</span>
+              <button
+                onClick={handleLogout}
+                className="bg-maroon-900 text-white px-3 py-2 rounded-md hover:bg-gold-500 hover:text-gray-950"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </header>
@@ -138,7 +151,7 @@ const AdminDashboard = () => {
                 <tr>
                   <td className="py-3">Mr. Saman Kumara</td>
                   <td className="py-3">Admin</td>
-                  <td className="py-3">Active</td>zzzzzzzzzzzzzzzzzzzzz
+                  <td className="py-3">Active</td>
                   <td className="py-3">5 min ago</td>
                   <td className="py-3">
                     <button className="text-blue-500 hover:underline">Edit</button>

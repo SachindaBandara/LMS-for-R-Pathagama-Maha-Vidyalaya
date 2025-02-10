@@ -16,6 +16,9 @@ export default [
         ecmaFeatures: { jsx: true },
         sourceType: 'module',
       },
+      "extends": [
+        'plugin:react/recommended'
+      ]
     },
     settings: { react: { version: '18.3' } },
     plugins: {
